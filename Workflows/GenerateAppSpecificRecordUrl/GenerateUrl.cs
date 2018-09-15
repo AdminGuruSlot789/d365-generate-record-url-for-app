@@ -13,12 +13,6 @@ namespace GenerateAppSpecificRecordUrl {
     /// </summary>
     public class GenerateUrl : CodeActivity {
 
-        private const string SETTINGS_ENTITY_NAME = "codec_setting";
-        private const string SETTINGS_ENTITY_VALUE_FIELD_NAME = "codec_name";
-
-        private const string PAGE_TYPE = "entityrecord";
-
-
         [Input("Record URL (Dynamic)")]
         [RequiredArgument]
         public InArgument<string> RecordUrl {
@@ -50,14 +44,12 @@ namespace GenerateAppSpecificRecordUrl {
             string recordUrl = RecordUrl.Get<string>(codeActivityContext);
             DynamicUrlParser dynamicUrlParser = new DynamicUrlParser(recordUrl);
 
-            EntityReference entityReference = dynamicUrlParser.GetEntityReference(service);
-
             // Get specified settings record.
             // Get appId from settings record.
             // Parse the appId to make sure it is valid.
+            EntityReference entityReference = dynamicUrlParser.GetEntityReference(service);
             EntityReference appIdSettingReference = AppIdSettingReference.Get<EntityReference>(codeActivityContext);
-
-            Guid appId = GetAppId(service, appIdSettingReference);
+            Guid appId = GetAppIdFromSettingRecord(service, appIdSettingReference);
 
             // Create URL.
             string newRecordUrl = CreateRecordUrl(dynamicUrlParser.BaseUrl, appId, entityReference);
@@ -66,19 +58,8 @@ namespace GenerateAppSpecificRecordUrl {
             NewRecordUrl.Set(codeActivityContext, newRecordUrl);
         }
 
-        public static Guid GetAppId(IOrganizationService service, EntityReference appIdSettingReference) {
-            //string appIdString = service.Retrieve(appIdSettingReference.LogicalName, appIdSettingReference.Id, new Microsoft.Xrm.Sdk.Query.ColumnSet(Settings.FieldNames.Value)).GetAttributeValue<string>(Settings.FieldNames.Value);
-            //Entity setting = service.Retrieve(appIdSettingReference.LogicalName, appIdSettingReference.Id, new ColumnSet(SETTINGS_ENTITY_VALUE_FIELD_NAME));
-            //string appIdString = setting.GetAttributeValue<string>(SETTINGS_ENTITY_VALUE_FIELD_NAME);
-            //Guid appId;
-            //try {
-            //    appId = Guid.Parse(appIdString);
-            //}
-            //catch {
-            //    throw new Exception($"{nameof(appId)} is not assigned with a valid GUID.");
-            //}
-            //return appId;
 
+        public static Guid GetAppIdFromSettingRecord(IOrganizationService service, EntityReference appIdSettingReference) {
             CustomSetting setting = service.Retrieve(appIdSettingReference.LogicalName, appIdSettingReference.Id, new ColumnSet(CustomSetting.FieldNames.Value)) as CustomSetting;
             Guid appId;
             try {
@@ -89,6 +70,7 @@ namespace GenerateAppSpecificRecordUrl {
             }
             return appId;
         }
+
 
         public static string CreateRecordUrl(string baseUrl, Guid appId, EntityReference entityReference) {
 
@@ -102,8 +84,8 @@ namespace GenerateAppSpecificRecordUrl {
                 throw new Exception($"{nameof(entityReference)} was not assigned.");
             }
 
-            // Add to the properties that are already there.
-            return $"{baseUrl}?appid={appId.ToString("D")}&pagetype={PAGE_TYPE}&etn={entityReference.LogicalName}&id={entityReference.Id.ToString("D")}";
+            // Compose the URL with the querystring parameters needed to access the Unified Interface apps.
+            return $"{baseUrl}?appid={appId.ToString("D")}&pagetype=entityrecord&etn={entityReference.LogicalName}&id={entityReference.Id.ToString("D")}";
         }
         
     }
