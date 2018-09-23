@@ -19,9 +19,6 @@ namespace GenerateAppSpecificRecordUrl {
         public int EntityTypeCode {
             get; set;
         }
-        public string BaseUrl {
-            get; set;
-        }
         public Guid Id {
             get; set;
         }
@@ -35,8 +32,6 @@ namespace GenerateAppSpecificRecordUrl {
                 Url = url;
                 var uri = new Uri(url);
                 int found = 0;
-
-                BaseUrl = url.Split('?').First();   // sorry
 
                 string[] parameters = uri.Query.TrimStart('?').Split('&');
                 foreach (string param in parameters) {

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xrm.Sdk.Workflow;
+﻿using Microsoft.Xrm.Sdk;
+using Microsoft.Xrm.Sdk.Workflow;
 using System;
 using System.Activities;
 using System.Collections.Generic;
@@ -21,9 +22,12 @@ namespace GenerateAppSpecificRecordUrl {
         }
 
         protected override void Execute(CodeActivityContext context) {
+            ITracingService tracingService = context.GetExtension<ITracingService>();
             string message = Message.Get(context);
 
-            throw new InvalidWorkflowException(message);
+            tracingService.Trace(message);
+
+            throw new InvalidWorkflowException("\n\n" + message + "\n\n");
         }
     }
 }
