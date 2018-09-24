@@ -78,9 +78,6 @@ namespace GenerateAppSpecificRecordUrl {
                     <entity name='{AppModule.EntityLogicalName}'>
                         <attribute name='{AppModule.FieldNames.Id}' />
                         <attribute name='{AppModule.FieldNames.ClientType}' />
-                        <attribute name='{AppModule.FieldNames.Name}' />
-                        <attribute name='{AppModule.FieldNames.UniqueName}' />
-                        <attribute name='{AppModule.FieldNames.Url}' />
                         <filter type='or'>
                             <condition attribute='{AppModule.FieldNames.Name}'
                                        operator='{FetchXmlOperators.Like}'
