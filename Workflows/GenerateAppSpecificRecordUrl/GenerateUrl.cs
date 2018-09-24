@@ -119,7 +119,7 @@ namespace GenerateAppSpecificRecordUrl {
                     "appid=" + appModule.Id.ToString("D"),
                     "etc=" + dynamicUrlParser.EntityTypeCode,
                     "id=" + entityReference.Id.ToString("D"),
-                    "newWindow=true" +
+                    "newWindow=true",
                     "pagetype=" + PageTypes.ENTITY_RECORD
                 });
             }
