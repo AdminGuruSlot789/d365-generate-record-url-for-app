@@ -6,38 +6,44 @@ using System;
 using System.Activities;
 using System.Linq;
 
-namespace GenerateAppSpecificRecordUrl {
+namespace GenerateAppSpecificRecordUrl
+{
 
     /// <summary>
     ///     Generates a Record URL based on the provided Record URL and the App specified in a
     ///     configuration record.
     /// </summary>
-    public class GenerateUrl : CodeActivity {
-
-        private class PageTypes {
+    public class GenerateUrl : CodeActivity
+    {
+        private class PageTypes
+        {
             public const string ENTITY_LIST = "entitylist";
             public const string ENTITY_RECORD = "entityrecord";
         }
 
         [Input("Record URL (Dynamic)")]
         [RequiredArgument]
-        public InArgument<string> RecordUrl {
+        public InArgument<string> RecordUrl
+        {
             get; set;
         }
-        
+
         [Input("App Name")]
         [RequiredArgument]
-        public InArgument<string> AppName {
+        public InArgument<string> AppName
+        {
             get; set;
         }
 
 
         [Output("New record URL")]
-        public OutArgument<string> NewRecordUrl {
+        public OutArgument<string> NewRecordUrl
+        {
             get; set;
         }
 
-        protected override void Execute(CodeActivityContext codeActivityContext) {
+        protected override void Execute(CodeActivityContext codeActivityContext)
+        {
             // Set up ITracingService, IOrganizationService.
             ITracingService tracingService = codeActivityContext.GetExtension<ITracingService>();
             IWorkflowContext context = codeActivityContext.GetExtension<IWorkflowContext>();
@@ -56,7 +62,8 @@ namespace GenerateAppSpecificRecordUrl {
         }
 
 
-        public static string GenerateUrlForApp(IOrganizationService service, string recordUrl, string appName) {
+        public static string GenerateUrlForApp(IOrganizationService service, string recordUrl, string appName)
+        {
             // Get base URL of the instance.
             string baseUrl = recordUrl.Split('?')[0];
 
@@ -72,7 +79,8 @@ namespace GenerateAppSpecificRecordUrl {
         }
 
 
-        public static AppModule GetAppModule(IOrganizationService service, string appName) {
+        public static AppModule GetAppModule(IOrganizationService service, string appName)
+        {
             string fetchXml = $@"
                 <fetch>
                     <entity name='{AppModule.EntityLogicalName}'>
@@ -91,7 +99,8 @@ namespace GenerateAppSpecificRecordUrl {
 
             AppModule appModule = (AppModule)service.RetrieveMultiple(new FetchExpression(fetchXml)).Entities.FirstOrDefault();
 
-            if (appModule == default(AppModule)) {
+            if (appModule == default(AppModule))
+            {
                 throw new InvalidWorkflowException($"No App was found with the name: {appName}.");
             }
 
@@ -99,11 +108,13 @@ namespace GenerateAppSpecificRecordUrl {
         }
 
 
-        public static string CreateRecordUrl(string baseUrl, AppModule appModule, EntityReference entityReference, DynamicUrlParser dynamicUrlParser) {
+        public static string CreateRecordUrl(string baseUrl, AppModule appModule, EntityReference entityReference, DynamicUrlParser dynamicUrlParser)
+        {
             // Compose the URL with the query string parameters needed to access the Unified Interface apps.
             string queryString = string.Empty;
 
-            if (appModule.ClientType == AppModule.ClientTypes.UNIFIED_INTERFACE) {
+            if (appModule.ClientType == AppModule.ClientTypes.UNIFIED_INTERFACE)
+            {
                 queryString = string.Join("&", new string[] {
                     "appid=" + appModule.Id.ToString("D"),
                     "pagetype=" + PageTypes.ENTITY_RECORD,
@@ -111,7 +122,8 @@ namespace GenerateAppSpecificRecordUrl {
                     "id=" + entityReference.Id.ToString("D")
                 });
             }
-            else if (appModule.ClientType == AppModule.ClientTypes.CLASSIC_INTERFACE) {
+            else if (appModule.ClientType == AppModule.ClientTypes.CLASSIC_INTERFACE)
+            {
                 queryString = string.Join("&", new string[] {
                     "appid=" + appModule.Id.ToString("D"),
                     "etc=" + dynamicUrlParser.EntityTypeCode,
@@ -120,9 +132,9 @@ namespace GenerateAppSpecificRecordUrl {
                     "pagetype=" + PageTypes.ENTITY_RECORD
                 });
             }
-            
+
             return baseUrl + "?" + queryString;
         }
-        
+
     }
 }

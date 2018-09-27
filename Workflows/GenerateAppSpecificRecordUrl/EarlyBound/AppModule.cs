@@ -7,15 +7,16 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GenerateAppSpecificRecordUrl.EarlyBound {
-
+namespace GenerateAppSpecificRecordUrl.EarlyBound
+{
     [DataContract]
     [EntityLogicalName(EntityLogicalName)]
-    public class AppModule : Entity {
-
+    public class AppModule : Entity
+    {
         public const string EntityLogicalName = "appmodule";
 
-        public class FieldNames {
+        public class FieldNames
+        {
             public const string Id = "appmoduleid";
             public const string ClientType = "clienttype";
             public const string Name = "name";
@@ -24,7 +25,8 @@ namespace GenerateAppSpecificRecordUrl.EarlyBound {
         }
 
 
-        public class ClientTypes {
+        public class ClientTypes
+        {
             public const int CLASSIC_INTERFACE = 2;
             public const int UNIFIED_INTERFACE = 4;
             public const int OUTLOOK_APP = 8;
@@ -38,11 +40,14 @@ namespace GenerateAppSpecificRecordUrl.EarlyBound {
         ///     The user interface type of the app.
         /// </summary>
         [AttributeLogicalName(FieldNames.ClientType)]
-        public int? ClientType {
-            get {
+        public int? ClientType
+        {
+            get
+            {
                 return Contains(FieldNames.ClientType) ? GetAttributeValue<int>(FieldNames.ClientType) : (int?)null;
             }
-            set {
+            set
+            {
                 SetAttributeValue(FieldNames.ClientType, value);
             }
         }
@@ -52,7 +57,8 @@ namespace GenerateAppSpecificRecordUrl.EarlyBound {
         ///     The name of the app.
         /// </summary>
         [AttributeLogicalName(FieldNames.Name)]
-        public string Name {
+        public string Name
+        {
             get => GetAttributeValue<string>(FieldNames.Name);
             set => SetAttributeValue(FieldNames.Name, value);
         }
@@ -62,7 +68,8 @@ namespace GenerateAppSpecificRecordUrl.EarlyBound {
         ///     The URL of the app.
         /// </summary>
         [AttributeLogicalName(FieldNames.Url)]
-        public string Url {
+        public string Url
+        {
             get => GetAttributeValue<string>(FieldNames.Url);
             set => SetAttributeValue(FieldNames.Url, value);
         }
@@ -72,7 +79,8 @@ namespace GenerateAppSpecificRecordUrl.EarlyBound {
         ///     The unique name of the app.
         /// </summary>
         [AttributeLogicalName(FieldNames.UniqueName)]
-        public string UniqueName {
+        public string UniqueName
+        {
             get => GetAttributeValue<string>(FieldNames.UniqueName);
             set => SetAttributeValue(FieldNames.UniqueName, value);
         }

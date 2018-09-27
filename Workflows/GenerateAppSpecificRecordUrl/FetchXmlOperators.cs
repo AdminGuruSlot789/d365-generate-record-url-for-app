@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GenerateAppSpecificRecordUrl {
-    public class FetchXmlOperators {
+namespace GenerateAppSpecificRecordUrl
+{
+    public class FetchXmlOperators
+    {
         public const string Equals = "eq";
         public const string NotEqual = "ne";
         public const string Like = "like";
