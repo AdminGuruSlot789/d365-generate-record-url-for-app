@@ -14,12 +14,6 @@ namespace GenerateAppSpecificRecordUrl
     /// </summary>
     public class GenerateUrl : CodeActivity
     {
-        private class PageTypes
-        {
-            public const string ENTITY_LIST = "entitylist";
-            public const string ENTITY_RECORD = "entityrecord";
-        }
-
         [Input("Record URL (Dynamic)")]
         [RequiredArgument]
         public InArgument<string> RecordUrl
@@ -116,7 +110,7 @@ namespace GenerateAppSpecificRecordUrl
             {
                 queryString = string.Join("&", new string[] {
                     "appid=" + appModule.Id.ToString("D"),
-                    "pagetype=" + PageTypes.ENTITY_RECORD,
+                    "pagetype=entityrecord",
                     "etn=" + entityReference.LogicalName,
                     "id=" + entityReference.Id.ToString("D")
                 });
@@ -128,7 +122,7 @@ namespace GenerateAppSpecificRecordUrl
                     "etc=" + dynamicUrlParser.EntityTypeCode,
                     "id=" + entityReference.Id.ToString("D"),
                     "newWindow=true",
-                    "pagetype=" + PageTypes.ENTITY_RECORD
+                    "pagetype=entityrecord"
                 });
             }
 
