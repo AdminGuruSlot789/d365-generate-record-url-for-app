@@ -8,7 +8,6 @@ using System.Linq;
 
 namespace GenerateAppSpecificRecordUrl
 {
-
     /// <summary>
     ///     Generates a Record URL based on the provided Record URL and the App specified in a
     ///     configuration record.

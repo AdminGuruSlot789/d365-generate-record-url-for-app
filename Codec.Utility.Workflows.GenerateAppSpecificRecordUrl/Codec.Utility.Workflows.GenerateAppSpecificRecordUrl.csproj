@@ -7,8 +7,8 @@
     <ProjectGuid>{DC8F1D13-283F-4652-B315-804DDF47D70F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GenerateAppSpecificRecordUrl</RootNamespace>
-    <AssemblyName>GenerateAppSpecificRecordUrl</AssemblyName>
+    <RootNamespace>Codec.Utility.Workflows.GenerateAppSpecificRecordUrl</RootNamespace>
+    <AssemblyName>Codec.Utility.Workflows.GenerateAppSpecificRecordUrl</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
